@@ -135,3 +135,43 @@ body {
   text-transform: uppercase;
   font-weight: bold;
 }
+
+// lista Zadań
+
+.task {
+  border-top: 1px solid #ddd;
+  margin-top: 1rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+.task__bar {
+  overflow:hidden;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+.task__date {
+  margin:0;
+}
+.task__date {
+  font-size: 0.9rem;
+  font-weight: normal;
+}
+.task__delete {
+  border:0;
+ // background: url(images/trash.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 20px 20px;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  text-indent: -999px;
+  overflow: hidden;
+}
+.task__text {
+  color:#777;
+  font-size:0.8rem;
+}
+
