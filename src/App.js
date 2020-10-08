@@ -2,85 +2,6 @@ import React, {Component} from "react";
 import './App.css';
 import "./styles.scss";
 
-
-// Dodawanie taska
-
-document.addEventListener('DOMContentLoaded', () => {
-    const todoList = document.querySelector('#todoList');
-    const todoForm = document.querySelector('#todoForm');
-    const todoSearch = document.querySelector('#todoSearch');
-    const todoTextarea = todoForm.querySelector('textarea');
-
-    function addTask(text) {
-      const element = React.cloneElement(Task);
-
-
-
-        //tworzę datę
-        const date = new Date();
-        const dateText = date.getFullYear();
-        document.querySelector(".task__date").innerText = dateText;
-
-        //wstawiam tekst
-        document.querySelector(".task__text").innerText = text;
-
-        //i wrzucam element do listy
-        todoList.append(element);
-    }
-
-    todoForm.addEventListener('submit', e => {
-        e.preventDefault();
-
-        if (todoTextarea.value !== '') {
-            addTask(todoTextarea.value);
-            todoTextarea.value = '';
-        }
-    });
-
-    todoList.addEventListener("click", e => {
-        if (e.target.classList.contains("task__delete")) {
-            e.target.closest(".task").remove();
-        }
-    });
-
-    todoSearch.addEventListener("input", () => {
-        const val = todoSearch.value;
-        const elems = todoList.querySelectorAll(".task");
-
-        for (const el of elems) {
-            const text = el.querySelector(".task__text").innerText;
-
-            if (text.includes(val)) {
-                el.style.setProperty("display", "");
-            } else {
-                el.style.setProperty("display", "none");
-            }
-        }
-    });
-});
-
-
-// task element
-
-class TaskElement extends Component {
-    render() {
-        return (
-            <>
-                <div className="element-bar">
-                    <h3 className="element-date"/>
-                    <button className="element-delete" title="Delete Task">
-                        Usuń
-                    </button>
-                </div>
-                <div className="element-text">
-                </div>
-            </>
-
-        )
-    }
-}
-
-
 // Header
 
 class Header extends Component {
@@ -100,6 +21,36 @@ class Header extends Component {
 // Formularz
 
 class Form extends Component {
+
+
+    state = {
+        task: "",
+        day: "",
+        month: "",
+        year: "",
+        hour: "",
+        minutes: "",
+    };
+
+    handleOnClick = (e) => {
+        const date = new Date();
+        const datefull = {
+            day: date.getDate(),
+            month: date.getMonth(),
+            year: date.getFullYear(),
+            hour: date.getHours(),
+            minutes: date.getMinutes()
+        };
+
+        this.setState({
+            day: datefull.day,
+            month: datefull.month,
+            year: datefull.year,
+            hour: datefull.hour,
+            minutes: datefull.minutes,
+            task: document.getElementsByTagName("textarea")
+        })
+    };
     render() {
         return (
             <section className="form__section">
@@ -109,7 +60,7 @@ class Form extends Component {
                         <textarea className="form__message" name="todoMessage" id="todoMessage" placeholder="Write Your task" />
                     </div>
                     <div className="form__row">
-                        <button type="submit" className="button form__button">Add to List</button>
+                        <button type="submit" className="button form__button" onClick={this.handleOnClick}>Add to List</button>
                     </div>
                 </form>
             </section>
@@ -117,7 +68,7 @@ class Form extends Component {
     }
 }
 
-// Lista zadań
+// Szukanie zadań - lista zadań
 
 class TaskList extends Component {
     render() {
@@ -141,26 +92,19 @@ class TaskList extends Component {
 }
 
 
-// Zadanie
+// Zadania
 
-class Task extends Component {
+class Tasks extends Component {
     render() {
         return (
-            <div className="task">
-                <div className="task__bar">
-                    <h3 className="task__date">20-10-2016 godz. 16:32</h3>
-                    <button className="task__delete" title="Delete task">
-                        Usuń
-                    </button>
-                </div>
-                <div className="task__text">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio laudantium quasi blanditiis
-                    enim molestias explicabo id totam veniam corporis maiores.
-                </div>
-            </div>
+            <>
+                <section className="task__list">
+                    <ul className="task__list__list">
+
+                    </ul>
+                </section>
+            </>
         )
-
-
     }
 }
 
@@ -179,7 +123,7 @@ class Flex extends Component {
                 </div>
                 <div className="flex__container__right">
                     <TaskList />
-                    <Task />
+                    <Tasks />
                 </div>
             </div>
         )
