@@ -32,7 +32,7 @@ class Form extends Component {
         minutes: "",
     };
 
-    handleOnClick = (e) => {
+    handleOnChange = (e) => {
         const date = new Date();
         const datefull = {
             day: date.getDate(),
@@ -48,19 +48,46 @@ class Form extends Component {
             year: datefull.year,
             hour: datefull.hour,
             minutes: datefull.minutes,
-            task: document.getElementsByTagName("textarea")
+           // task: document.getElementsByTagName("textarea").innerText
         })
     };
+
+    storageAdd = () => {
+
+        if (localStorage.getItem("Tasks") === null || localStorage.getItem("Tasks") === "" || localStorage.getItem("Tasks") === undefined) {
+            localStorage.setItem("Tasks", JSON.stringify([{
+                day: this.state.day,
+                month: this.state.month,
+                year: this.state.year,
+                hour: this.state.hour,
+                minutes: this.state.minutes
+            }]))
+        } else {
+
+            let localStrObject = JSON.parse(localStorage.getItem("Tasks"));
+            localStrObject.push({
+                day: this.state.day,
+                month: this.state.month,
+                year: this.state.year,
+                hour: this.state.hour,
+                minutes: this.state.minutes,
+                // task: this.state.task
+            });
+
+            localStorage.setItem("Tasks", JSON.stringify(localStrObject));
+        }};
+
+
     render() {
         return (
             <section className="form__section">
                 <form className="form" id="todoForm">
                     <div className="form__row">
                         <label className="form__label" htmlFor="todoMessage">To Do</label>
-                        <textarea className="form__message" name="todoMessage" id="todoMessage" placeholder="Write Your task" />
+                        <textarea className="form__message" name="todoMessage" id="todoMessage" onChange={this.handleOnChange} placeholder="Write Your task" />
                     </div>
                     <div className="form__row">
-                        <button type="submit" className="button form__button" onClick={this.handleOnClick}>Add to List</button>
+                        <button type="submit" className="button form__button" onClick={this.storageAdd}>Add to List</button>
                     </div>
                 </form>
             </section>
