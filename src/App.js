@@ -77,6 +77,13 @@ class Form extends Component {
             localStorage.setItem("Tasks", JSON.stringify(localStrObject));
         }};
 
+    storageRemove = () => {
+
+       // localStorage.removeItem("Tasks")
+
+
+    };
+
 
     render() {
         return (
@@ -126,9 +133,14 @@ class Tasks extends Component {
         return (
             <>
                 <section className="task__list">
-                    <ul className="task__list__list">
 
-                    </ul>
+                        {JSON.parse(localStorage.getItem("Tasks")).map((el,i) => {
+                            return <div key={i}> <strong>Added at:</strong> {el.day}.{el.month}.{el.year} <strong>Time:</strong> {el.hour}:{el.minutes}
+                                <button className="task__list__remove" onClick={this.storageRemove}>Remove</button>
+                            </div>
+
+                        })}
+
                 </section>
             </>
         )
