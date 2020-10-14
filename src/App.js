@@ -23,7 +23,8 @@ class Header extends Component {
 class Form extends Component {
 
 
-        state = {
+    state = {
+
             value: "Sample Task text",
             day: "Day",
             month: "Month",
@@ -126,29 +127,31 @@ class TaskList extends Component {
 // Zadania
 
 class Task extends Component {
-
-
-    storageRemove = () => {
-        let removeObj = JSON.parse(localStorage.getItem('Tasks'));
-        removeObj.splice(this.index, 1);
-        localStorage.setItem('Tasks', JSON.stringify(removeObj))
+    state = {
+        data: JSON.parse(localStorage.getItem('Tasks'))
     };
 
+    storageRemove = (index) => {
+        let removeObj = JSON.parse(localStorage.getItem('Tasks'));
+        removeObj.splice(index, 1);
+        localStorage.setItem('Tasks', JSON.stringify(removeObj))
+        this.setState({
+            data: JSON.parse(localStorage.getItem("Tasks"))
+        })
+    };
 
     render() {
+        const tasks = this.state.data;
         return (
             <>
                 <section className="task__list">
-                    {JSON.parse(localStorage.getItem("Tasks")).map((el, i) => {
-                        return <div key={i}><strong>Added at:</strong> {el.day}.{el.month}.{el.year} &#32;
-                            &nbsp; - {el.time}
-                            <p><strong> Task description: </strong></p>
-                            {el.value}
-                            <button className="task__list__remove" onClick={this.storageRemove}>Remove</button>
+                    {Boolean(tasks) && tasks.map((el, i) => (
+                        <div key={i}><strong>Added at:</strong> <span> {el.day}.{el.month}.{el.year}  &#32;
+                            &nbsp; - {el.time} </span>
+                            <p> <strong className="task__list__description"> {el.value} </strong></p>
+                            <button className="task__list__remove" onClick={() => this.storageRemove(i)}>Remove</button>
                         </div>
-
-                    })}
-
+                    ))}
                 </section>
             </>
         )
