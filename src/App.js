@@ -23,14 +23,14 @@ class Header extends Component {
 class Form extends Component {
 
 
-    state = {
-        value: "",
-        day: "",
-        month: "",
-        year: "",
-        hour: "",
-        minutes: "",
-    };
+        state = {
+            value: "Sample Task text",
+            day: "Day",
+            month: "Month",
+            year: "Year",
+            time: "Hour:Minutes:Seconds",
+
+        };
 
 
     handleOnChange = (e) => {
@@ -39,8 +39,7 @@ class Form extends Component {
             day: date.getDate(),
             month: date.getMonth(),
             year: date.getFullYear(),
-            hour: date.getHours(),
-            minutes: date.getMinutes(),
+            time: date.toLocaleTimeString(),
             value: e.target.value
 
     };
@@ -49,8 +48,7 @@ class Form extends Component {
             day: datefull.day,
             month: datefull.month,
             year: datefull.year,
-            hour: datefull.hour,
-            minutes: datefull.minutes,
+            time: datefull.time,
             value: datefull.value
 
         })
@@ -65,8 +63,7 @@ class Form extends Component {
                 day: this.state.day,
                 month: this.state.month,
                 year: this.state.year,
-                hour: this.state.hour,
-                minutes: this.state.minutes,
+                time: this.state.time,
                 value: this.state.value
             }]))
         } else {
@@ -76,8 +73,7 @@ class Form extends Component {
                 day: this.state.day,
                 month: this.state.month,
                 year: this.state.year,
-                hour: this.state.hour,
-                minutes: this.state.minutes,
+                time: this.state.time,
                 value: this.state.value
             });
 
@@ -139,26 +135,24 @@ class Task extends Component {
     };
 
 
+    render() {
+        return (
+            <>
+                <section className="task__list">
+                    {JSON.parse(localStorage.getItem("Tasks")).map((el, i) => {
+                        return <div key={i}><strong>Added at:</strong> {el.day}.{el.month}.{el.year} &#32;
+                            &nbsp; - {el.time}
+                            <p><strong> Task description: </strong></p>
+                            {el.value}
+                            <button className="task__list__remove" onClick={this.storageRemove}>Remove</button>
+                        </div>
 
-        render()
-        {
-            return (
-                <>
-                    <section className="task__list">
-                        {JSON.parse(localStorage.getItem("Tasks")).map((el, i) => {
-                            return <div key={i}><strong>Added at:</strong> {el.day}.{el.month}.{el.year} &#32;
-                                 &nbsp; - {el.hour}:{el.minutes}
-                                <p><strong> Task description: </strong></p>
-                                {el.value}
-                                <button className="task__list__remove" onClick={this.storageRemove}>Remove</button>
-                            </div>
+                    })}
 
-                        })}
-
-                    </section>
-                </>
-            )
-        }
+                </section>
+            </>
+        )
+    }
 
 }
 
