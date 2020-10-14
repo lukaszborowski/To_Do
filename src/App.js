@@ -1,40 +1,32 @@
-import React, {Component} from "react";
+import React, { Component, useState } from "react";
 import './App.css';
 import "./styles.scss";
 
 // Header
 
-class Header extends Component {
-    render() {
-        return (
-            <section className="header__section">
-                <div className="header__container">
-                    <h1>Make a list of Your tasks</h1>
-                </div>
-            </section>
-
-        )
-    }
+const Header = () => {
+    return (
+        <section className="header__section">
+            <div className="header__container">
+                <h1>Make a list of Your tasks</h1>
+            </div>
+        </section>
+    )
 }
 
 
 // Formularz
 
-class Form extends Component {
+const Form = () => {
+    const [state, setState] = useState({
+        value: "Sample Task text",
+        day: "Day",
+        month: "Month",
+        year: "Year",
+        time: "Hour:Minutes:Seconds",
+    })
 
-
-    state = {
-
-            value: "Sample Task text",
-            day: "Day",
-            month: "Month",
-            year: "Year",
-            time: "Hour:Minutes:Seconds",
-
-        };
-
-
-    handleOnChange = (e) => {
+    const handleOnChange = (e) => {
         const date = new Date();
         const datefull = {
             day: date.getDate(),
@@ -42,152 +34,123 @@ class Form extends Component {
             year: date.getFullYear(),
             time: date.toLocaleTimeString(),
             value: e.target.value
+        };
 
-    };
-
-        this.setState({
+        setState({
             day: datefull.day,
             month: datefull.month,
             year: datefull.year,
             time: datefull.time,
             value: datefull.value
-
         })
     };
 
-
-    storageAdd = () => {
-
-
-        if (localStorage.getItem("Tasks") === null || localStorage.getItem("Tasks") === "" || localStorage.getItem("Tasks") === undefined) {
-            localStorage.setItem("Tasks", JSON.stringify([{
-                day: this.state.day,
-                month: this.state.month,
-                year: this.state.year,
-                time: this.state.time,
-                value: this.state.value
-            }]))
+    const storageAdd = (e) => {
+        if (!Boolean(localStorage.getItem("Tasks"))) {
+            localStorage.setItem("Tasks", JSON.stringify([{...state}]))
         } else {
-
             let localStrObject = JSON.parse(localStorage.getItem("Tasks"));
-            localStrObject.push({
-                day: this.state.day,
-                month: this.state.month,
-                year: this.state.year,
-                time: this.state.time,
-                value: this.state.value
-            });
+            localStrObject.push({...state});
 
             localStorage.setItem("Tasks", JSON.stringify(localStrObject));
-        }};
+        }
+    };
 
-
-    render() {
-        return (
-            <section className="form__section">
-                <form  className="form" id="todoForm">
-                    <div className="form__row">
-                        <label className="form__label" htmlFor="todoMessage">To Do
-                        <textarea className="form__message" name="todoMessage" id="todoMessage" placeholder="Write Your Task" onChange={this.handleOnChange}/>
+    return (
+        <section className="form__section">
+            <form className="form" id="todoForm" onSubmit={(e) => storageAdd(e)}>
+                <div className="form__row">
+                    <label className="form__label" htmlFor="todoMessage">To Do
+                        <textarea
+                            className="form__message"
+                            name="todoMessage"
+                            id="todoMessage"
+                            placeholder="Write Your Task"
+                            onChange={(e) => handleOnChange(e)}
+                        />
                     </label>
-                    </div>
-                    <div className="form__row">
-                        <button type="submit" className="button form__button" onClick={this.storageAdd}>Add to List</button>
-                    </div>
-                </form>
-            </section>
-        )
-    }
+                </div>
+                <div className="form__row">
+                    <button type="submit" className="button form__button">Add to List</button>
+                </div>
+            </form>
+        </section>
+    )
 }
 
 // Szukanie zadań - lista zadań
 
-class TaskList extends Component {
-    render() {
-        return (
+const TaskList = () => {
+    return (
+        <>
             <section className="list__section">
                 <header className="list__header">
                     <h2 className="list__title">
                         Task List:
                     </h2>
                     <form className="list__search__form">
-                        <input type="search" id="todoSearch" className="list__search" placeholder="Search Task"/>
+                        <input type="search" id="todoSearch" className="list__search" placeholder="Search Task" />
                     </form>
                 </header>
-
                 <div className="list" id="todoList">
-
                 </div>
             </section>
-        )
-    }
+
+        </>
+    )
 }
 
 
 // Zadania
 
-class Task extends Component {
-    state = {
-        data: JSON.parse(localStorage.getItem('Tasks'))
-    };
+const Task = () => {
+    const [state, setState] = useState(JSON.parse(localStorage.getItem('Tasks')))
 
-    storageRemove = (index) => {
+    const storageRemove = (index) => {
         let removeObj = JSON.parse(localStorage.getItem('Tasks'));
         removeObj.splice(index, 1);
         localStorage.setItem('Tasks', JSON.stringify(removeObj))
-        this.setState({
-            data: JSON.parse(localStorage.getItem("Tasks"))
-        })
+        setState(JSON.parse(localStorage.getItem("Tasks")))
     };
 
-    render() {
-        const tasks = this.state.data;
-        return (
-            <>
-                <section className="task__list">
-                    {Boolean(tasks) && tasks.map((el, i) => (
-                        <div key={i}><strong>Added at:</strong> <span> {el.day}.{el.month}.{el.year}  &#32;
-                            &nbsp; - {el.time} </span>
-                            <p> <strong className="task__list__description"> {el.value} </strong></p>
-                            <button className="task__list__remove" onClick={() => this.storageRemove(i)}>Remove</button>
-                        </div>
-                    ))}
-                </section>
-            </>
-        )
-    }
-
+    return (
+        <>
+            <section className="task__list">
+                {Boolean(state) && state.map((el, i) => (
+                    <div key={i}><strong>Added at:</strong> {el.day}.{el.month}.{el.year} &#32; &nbsp; - {el.time}
+                        <p><strong> Task description: </strong></p>
+                        {el.value}
+                        <button className="task__list__remove" onClick={() => storageRemove(i)}>Remove</button>
+                    </div>
+                ))}
+            </section>
+        </>
+    )
 }
 
 // Wyświetlanie
 
-
-class Flex extends Component {
-    render() {
-        return (
-            <div className="flex__container">
-                <div className="flex__container__left">
-                    <Header />
-                    <Form />
-                </div>
-                <div className="flex__container__right">
-                    <TaskList />
-                    <Task />
-                </div>
+const Flex = () => {
+    return (
+        <div className="flex__container">
+            <div className="flex__container__left">
+                <Header />
+                <Form />
             </div>
-        )
-    }
+            <div className="flex__container__right">
+                <TaskList />
+                <Task />
+            </div>
+        </div>
+    )
 }
 
 class App extends Component {
-
     render() {
         return (
-           <Flex />
+            <Flex />
         )
     }
-
 }
 
 export default App;
-
