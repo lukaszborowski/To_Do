@@ -39,7 +39,7 @@ body {
 
 .date {
   width: 88%;
-  height: 4rem;
+  height: fit-content;
   margin: 1% 6% 1% 6%;
   background: #fff;
   border-radius: 5px;
@@ -133,23 +133,15 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0.5rem;
 }
-.list__search__form {
-  width: 50%;
-}
-.list__search {
-  border: 1px solid #aaa;
-  padding: 0.7rem;
-  width: 100%;
-  border-radius: 3px;
-  text-decoration: #aaaaaa;
-}
+
 .list__title {
-  margin-top: 0;
-  margin-bottom: 0;
-  font-size: 2rem;
+  margin-left: 35%;
+  font-size: 1.8rem;
   text-transform: uppercase;
   font-weight: bold;
+  text-align: center;
 }
 
 // lista Zadań
@@ -196,6 +188,7 @@ body {
 .task__list {
 
   div {
+
   background: #fff;
   font-family: sans-serif;
   border-radius: 5px;
@@ -205,12 +198,22 @@ body {
   font-style: italic;
   color: tomato;
     font-size: 1.2rem;
+  p {
+    margin-top: 1%;
+    margin-bottom: 1%;
+  }
+
 
   }
+
+
   .task__list__description {
     font-size: 1.6rem;
     font-style: normal;
     color: black;
+    margin-left: 3%;
+
+    text-transform: capitalize;
 
   }
 
@@ -220,7 +223,7 @@ body {
 }
 
 .task__list__remove {
-  padding: 0.4rem 1.6rem;
+  padding: 0.2rem .6rem;
   background: tomato;
   color: #fff;
   border:0;

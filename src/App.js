@@ -3,30 +3,41 @@ import './App.css';
 import "./styles.scss";
 
 
- // Zegar
- const Time = () => {
+class Clock extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {date: new Date()};
+    }
 
-//     const [state, setState] = useState({
-//         clock: new Date().toLocaleTimeString()
-//     });
-//
-//      const clockFunction = () => {
-//
-//          setState({
-//              clock: new Date().toLocaleTimeString()
-//          })
-//
-// }; setInterval(clockFunction, 1000);
+    componentDidMount() {
+        this.timerID = setInterval(
+            () => this.tick(),
+            1000
+        );
+    }
 
-     return (
+    componentWillUnmount() {
+        clearInterval(this.timerID);
+    }
+
+    tick() {
+        this.setState({
+            date: new Date()
+        });
+    }
+
+    render() {
+
+
+    return (
          <div className="date">
              <h1>
-                 <span>Today is:</span> { new Date().toDateString() }
+                 <span>Today is:</span> { new Date().toDateString() } - {this.state.date.toLocaleTimeString()}
              </h1>
          </div>
      );
 
- };
+ }};
 
 
 
@@ -103,31 +114,6 @@ const Form = () => {
     };
 
 
-// Szukanie zadań - lista zadań
-
-const TaskList = () => {
-    return (
-        <>
-            <section className="list__section">
-                <header className="list__header">
-                    <h2 className="list__title">
-                        Task List:
-                    </h2>
-                    <form className="list__search__form">
-                        <input type="search" id="todoSearch" className="list__search" placeholder="Search Task" />
-                    </form>
-                </header>
-
-                <div className="list" id="todoList">
-
-                </div>
-            </section>
-
-
-        </>
-    )
-};
-
 // Zadania
 
 const Task = () => {
@@ -149,16 +135,29 @@ const Task = () => {
         }
     };
 
+
     return (
         <>
             <div className="remove__tasks">
                 <button onClick={() => removeAll()}>Clear All Tasks</button>
             </div>
+            <section className="list__section">
+                <header className="list__header">
+                    <h2 className="list__title">
+                        Task List:
+                    </h2>
+
+                </header>
+
+            </section>
             <section className="task__list">
                 {Boolean(state) && state.map((el, i) => (
-                    <div key={i}><strong>Added at:</strong> <span> {el.day}  &#32;
-                        &nbsp; - {el.time} </span>
+                    <div key={i}>
+                        <strong> Task Description: </strong>
                         <p> <strong className="task__list__description"> {el.value} </strong></p>
+                        <strong>Added at:</strong> <span> {el.day}  &#32;
+                            &nbsp; - {el.time}  </span>
+
                         <button className="task__list__remove" onClick={() => storageRemove()}>Remove</button>
                     </div>
                 ))}
@@ -173,14 +172,13 @@ const Task = () => {
 const Flex = () => {
     return (
         <>
-            <Time />
+            <Clock />
             <div className="flex__container">
                 <div className="flex__container__left">
                     <Header />
                     <Form />
                 </div>
                 <div className="flex__container__right">
-                    <TaskList />
                     <Task />
                 </div>
             </div>
