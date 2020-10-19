@@ -35,15 +35,31 @@ body {
 
 }
 
+// Date and Time //
+
+.date {
+  width: 88%;
+  height: 4rem;
+  margin: 1% 6% 1% 6%;
+  background: #fff;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 3rem;
+  padding: 0.4rem;
+  span {
+    color: tomato;
+  }
+}
+
 // Header //
 
 .header__container {
   width: $width;
   margin: $marginArea;
-  height: 5rem;
+  height: 4rem;
   background: #fff;
   text-align: center;
-  padding-top: 0.9rem;
+  padding: 0.7rem;
   border-radius: 5px;
 
   .h1 {
@@ -110,8 +126,8 @@ body {
   border-radius: 5px;
   margin-top: 2%;
   box-shadow: 0 1px 2px rgba(0,0,0,0.2);
-  padding: 1rem;
-  height: 5rem;
+  padding: 0.5rem;
+  height: 4rem;
 }
 .list__header {
   display: flex;
@@ -160,7 +176,6 @@ body {
 }
 .task__delete {
   border:0;
- // background: url(images/trash.svg);
   background-position: center;
   background-repeat: no-repeat;
   background-size: 20px 20px;
@@ -216,4 +231,37 @@ body {
   font-weight: bold;
   font-size: 1.2rem;
   margin-left: 75%;
+  &:hover {
+    background: #ED2D2D;
+  }
+}
+
+.remove__tasks {
+  background: #fff;
+  font-family: sans-serif;
+  border-radius: 5px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  padding: 1rem;
+  font-style: italic;
+  color: tomato;
+  font-size: 1.2rem;
+  width: $width;
+  margin-top: 2%;
+
+  button {
+    padding: 0.4rem 1.6rem;
+    background: tomato;
+    color: #fff;
+    border:0;
+    border-radius: 0.188rem;
+    transition: 0.4s all;
+    cursor: pointer;
+    width: 100%;
+    height: 2.5rem;
+    font-weight: bold;
+    font-size: 1.3rem;
+    &:hover {
+      background: #ED2D2D;
+    }
+  }
 }
